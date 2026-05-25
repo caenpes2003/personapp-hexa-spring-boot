@@ -63,7 +63,7 @@ personapp-hexa-spring-boot/
 
 ## Requisitos previos
 
-Solo se necesitan tres herramientas en la máquina del evaluador:
+Solo se necesitan tres herramientas en la máquina usada para correr:
 
 - **JDK 11 o superior** (probado con Java 11 y Java 17). Verificar con `java -version`.
 - **Git** (para clonar el repositorio).
