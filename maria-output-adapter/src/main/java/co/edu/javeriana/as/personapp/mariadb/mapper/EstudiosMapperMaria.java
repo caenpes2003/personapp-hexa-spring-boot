@@ -43,15 +43,45 @@ public class EstudiosMapperMaria {
 
 	public Study fromAdapterToDomain(EstudiosEntity estudiosEntity) {
 		Study study = new Study();
-		study.setPerson(personaMapperMaria.fromAdapterToDomain(estudiosEntity.getPersona()));
-		study.setProfession(profesionMapperMaria.fromAdapterToDomain(estudiosEntity.getProfesion()));
+		study.setPerson(buildPersonStub(estudiosEntity));
+		study.setProfession(buildProfessionStub(estudiosEntity));
 		study.setGraduationDate(validateGraduationDate(estudiosEntity.getFecha()));
 		study.setUniversityName(validateUniversityName(estudiosEntity.getUniver()));
-		return null;
+		return study;
+	}
+
+	private co.edu.javeriana.as.personapp.domain.Person buildPersonStub(EstudiosEntity estudiosEntity) {
+		co.edu.javeriana.as.personapp.domain.Person person = new co.edu.javeriana.as.personapp.domain.Person();
+		if (estudiosEntity.getPersona() != null) {
+			person.setIdentification(estudiosEntity.getPersona().getCc());
+			person.setFirstName(estudiosEntity.getPersona().getNombre());
+			person.setLastName(estudiosEntity.getPersona().getApellido());
+		} else if (estudiosEntity.getEstudiosPK() != null) {
+			person.setIdentification(estudiosEntity.getEstudiosPK().getCcPer());
+		}
+		return person;
+	}
+
+	private co.edu.javeriana.as.personapp.domain.Profession buildProfessionStub(EstudiosEntity estudiosEntity) {
+		co.edu.javeriana.as.personapp.domain.Profession profession = new co.edu.javeriana.as.personapp.domain.Profession();
+		if (estudiosEntity.getProfesion() != null) {
+			profession.setIdentification(estudiosEntity.getProfesion().getId());
+			profession.setName(estudiosEntity.getProfesion().getNom());
+			profession.setDescription(estudiosEntity.getProfesion().getDes());
+		} else if (estudiosEntity.getEstudiosPK() != null) {
+			profession.setIdentification(estudiosEntity.getEstudiosPK().getIdProf());
+		}
+		return profession;
 	}
 
 	private LocalDate validateGraduationDate(Date fecha) {
-		return fecha != null ? fecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate() : null;
+		if (fecha == null) {
+			return null;
+		}
+		if (fecha instanceof java.sql.Date) {
+			return ((java.sql.Date) fecha).toLocalDate();
+		}
+		return fecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 	}
 
 	private String validateUniversityName(String univer) {
