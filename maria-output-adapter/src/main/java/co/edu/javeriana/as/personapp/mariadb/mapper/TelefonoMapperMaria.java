@@ -31,11 +31,17 @@ public class TelefonoMapperMaria {
 		Phone phone = new Phone();
 		phone.setNumber(telefonoEntity.getNum());
 		phone.setCompany(telefonoEntity.getOper());
-		phone.setOwner(validateOwner(telefonoEntity.getDuenio()));
+		phone.setOwner(buildOwnerStub(telefonoEntity.getDuenio()));
 		return phone;
 	}
 
-	private @NonNull Person validateOwner(PersonaEntity duenio) {
-		return duenio != null ? personaMapperMaria.fromAdapterToDomain(duenio) : new Person();
+	private @NonNull Person buildOwnerStub(PersonaEntity duenio) {
+		Person owner = new Person();
+		if (duenio != null) {
+			owner.setIdentification(duenio.getCc());
+			owner.setFirstName(duenio.getNombre());
+			owner.setLastName(duenio.getApellido());
+		}
+		return owner;
 	}
 }

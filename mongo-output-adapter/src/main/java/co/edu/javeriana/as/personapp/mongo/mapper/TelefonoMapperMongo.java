@@ -31,11 +31,17 @@ public class TelefonoMapperMongo {
 		Phone phone = new Phone();
 		phone.setNumber(telefonoDocument.getId());
 		phone.setCompany(telefonoDocument.getOper());
-		phone.setOwner(validateOwner(telefonoDocument.getPrimaryDuenio()));
+		phone.setOwner(buildOwnerStub(telefonoDocument.getPrimaryDuenio()));
 		return phone;
 	}
 
-	private @NonNull Person validateOwner(PersonaDocument duenio) {
-		return duenio != null ? personaMapperMongo.fromAdapterToDomain(duenio) : new Person();
+	private @NonNull Person buildOwnerStub(PersonaDocument duenio) {
+		Person owner = new Person();
+		if (duenio != null) {
+			owner.setIdentification(duenio.getId());
+			owner.setFirstName(duenio.getNombre());
+			owner.setLastName(duenio.getApellido());
+		}
+		return owner;
 	}
 }
