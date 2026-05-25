@@ -74,6 +74,7 @@ build/
 
 ### Logs ###
 logs/
+build.log
 
 ### OS ###
 .DS_Store
