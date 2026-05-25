@@ -2,7 +2,7 @@
 
 Laboratorio 2 de Arquitectura de Software (Pontificia Universidad Javeriana). Servicio web hexagonal construido con Spring Boot que expone CRUD sobre las entidades **Persona, Profesión, Teléfono y Estudio** con persistencia dual contra **MariaDB** y **MongoDB**, accesible vía **REST** (con Swagger 3) y vía **CLI**.
 
-**Autor:** Camilo Peñuela — `caenpes2003@gmail.com`
+**Autores:** Camilo Peñuela, Santiago Mesa, xxx
 
 ## Tabla de contenidos
 
