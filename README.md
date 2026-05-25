@@ -107,8 +107,7 @@ personapp-mariadb   mariadb:10.11   Up X minutes (healthy)
 personapp-mongodb   mongo:6         Up X minutes (healthy)
 ```
 
-> ![Contenedores arriba](docs/img/docker-compose-ps.png)
-> *Pendiente: capturar `docker compose ps` mostrando ambos contenedores healthy.*
+![Contenedores arriba](docs/img/docker-compose-ps.png)
 
 ### 3. Variables de configuración
 
@@ -160,8 +159,7 @@ Los `jar` ejecutables quedan en:
 - `rest-input-adapter/target/rest-input-adapter-0.0.1-SNAPSHOT.jar`
 - `cli-input-adapter/target/cli-input-adapter-0.0.1-SNAPSHOT.jar`
 
-> ![Build success](docs/img/mvnw-build-success.png)
-> *Pendiente: capturar la salida de `mvnw -DskipTests clean install` mostrando BUILD SUCCESS.*
+![Build success](docs/img/mvnw-build-success.png)
 
 ## Despliegue y ejecución
 
@@ -176,8 +174,8 @@ La aplicación arranca en `http://localhost:3000`. Cuando aparece la línea `Sta
 - **Swagger UI:** http://localhost:3000/swagger-ui.html
 - **OpenAPI JSON:** http://localhost:3000/api-docs
 
-> ![Swagger UI](docs/img/swagger-ui.png)
-> *Pendiente: capturar la pantalla principal de Swagger UI con los 24 endpoints.*
+![Swagger UI - primera mitad](docs/img/swagger-ui.png)
+![Swagger UI - segunda mitad](docs/img/swagger-ui-2.png)
 
 ### Aplicación CLI
 
@@ -266,8 +264,7 @@ PersonaModelCli(cc=147258369, nombre=Pepita, apellido=Juarez, genero=FEMALE, eda
 ...
 ```
 
-> ![CLI ejecutando](docs/img/cli-personas-maria.png)
-> *Pendiente: capturar una sesión del CLI listando personas desde MariaDB.*
+![CLI ejecutando](docs/img/cli-personas-maria.png)
 
 ## Ejemplos completos con curl
 
@@ -381,8 +378,7 @@ curl -s -X DELETE http://localhost:3000/api/v1/estudio/MARIA/123456789/100
 curl -s http://localhost:3000/api/v1/estudio/MONGO/count/total
 ```
 
-> ![Pruebas con Postman o curl](docs/img/curl-crud.png)
-> *Pendiente: capturar la terminal con un par de ejemplos de curl ejecutados o un Postman con la colección de endpoints.*
+![Pruebas con curl](docs/img/curl-crud.png)
 
 ## Detener el entorno
 
