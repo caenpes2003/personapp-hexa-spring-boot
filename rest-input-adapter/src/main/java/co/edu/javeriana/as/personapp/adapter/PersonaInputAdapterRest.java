@@ -66,18 +66,65 @@ public class PersonaInputAdapterRest {
 		}
 	}
 
+	private PersonaResponse buildResponse(Person person, String selectedDb) {
+		if (selectedDb.equalsIgnoreCase(DatabaseOption.MARIA.toString())) {
+			return personaMapperRest.fromDomainToAdapterRestMaria(person);
+		}
+		return personaMapperRest.fromDomainToAdapterRestMongo(person);
+	}
+
 	public PersonaResponse crearPersona(PersonaRequest request) {
 		try {
 			String selectedDb = setPersonOutputPortInjection(request.getDatabase());
 			Person person = personInputPort.create(personaMapperRest.fromAdapterToDomain(request));
-			if (selectedDb.equalsIgnoreCase(DatabaseOption.MARIA.toString())) {
-				return personaMapperRest.fromDomainToAdapterRestMaria(person);
-			}
-			return personaMapperRest.fromDomainToAdapterRestMongo(person);
+			return buildResponse(person, selectedDb);
 		} catch (InvalidOptionException e) {
 			log.warn(e.getMessage());
 		}
 		return null;
 	}
 
+	public PersonaResponse buscarUna(String database, Integer cc) {
+		try {
+			String selectedDb = setPersonOutputPortInjection(database);
+			Person person = personInputPort.findOne(cc);
+			return buildResponse(person, selectedDb);
+		} catch (InvalidOptionException | co.edu.javeriana.as.personapp.common.exceptions.NoExistException e) {
+			log.warn(e.getMessage());
+			return null;
+		}
+	}
+
+	public PersonaResponse editar(Integer cc, PersonaRequest request) {
+		try {
+			String selectedDb = setPersonOutputPortInjection(request.getDatabase());
+			Person incoming = personaMapperRest.fromAdapterToDomain(request);
+			incoming.setIdentification(cc);
+			Person person = personInputPort.edit(cc, incoming);
+			return buildResponse(person, selectedDb);
+		} catch (InvalidOptionException | co.edu.javeriana.as.personapp.common.exceptions.NoExistException e) {
+			log.warn(e.getMessage());
+			return null;
+		}
+	}
+
+	public Boolean eliminar(String database, Integer cc) {
+		try {
+			setPersonOutputPortInjection(database);
+			return personInputPort.drop(cc);
+		} catch (InvalidOptionException | co.edu.javeriana.as.personapp.common.exceptions.NoExistException e) {
+			log.warn(e.getMessage());
+			return false;
+		}
+	}
+
+	public Integer contar(String database) {
+		try {
+			setPersonOutputPortInjection(database);
+			return personInputPort.count();
+		} catch (InvalidOptionException e) {
+			log.warn(e.getMessage());
+			return 0;
+		}
+	}
 }
