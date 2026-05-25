@@ -1,6 +1,4 @@
-use persona_db
-
-db.persona.insertMany([
+db.getSiblingDB("persona_db").persona.insertMany([
 	{
 		"_id": NumberInt(123456789),
 		"nombre": "Pepe",
