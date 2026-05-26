@@ -56,76 +56,42 @@ public class ProfesionInputAdapterRest {
 		return profesionMapperRest.fromDomainToAdapterRestMongo(profession);
 	}
 
-	public List<ProfesionResponse> historial(String database) {
-		log.info("Into historial Profesion in Input Adapter");
-		try {
-			String selectedDb = setProfessionOutputPortInjection(database);
-			return professionInputPort.findAll().stream()
-					.map(p -> buildResponse(p, selectedDb))
-					.collect(Collectors.toList());
-		} catch (InvalidOptionException e) {
-			log.warn(e.getMessage());
-			return new ArrayList<>();
-		}
+	public List<ProfesionResponse> historial(String database) throws InvalidOptionException {
+		String selectedDb = setProfessionOutputPortInjection(database);
+		return professionInputPort.findAll().stream()
+				.map(p -> buildResponse(p, selectedDb))
+				.collect(Collectors.toList());
 	}
 
-	public ProfesionResponse buscarUna(String database, Integer id) {
-		try {
-			String selectedDb = setProfessionOutputPortInjection(database);
-			Profession profession = professionInputPort.findOne(id);
-			return buildResponse(profession, selectedDb);
-		} catch (InvalidOptionException | NoExistException e) {
-			log.warn(e.getMessage());
-			return null;
-		}
+	public ProfesionResponse buscarUna(String database, Integer id)
+			throws InvalidOptionException, NoExistException {
+		String selectedDb = setProfessionOutputPortInjection(database);
+		Profession profession = professionInputPort.findOne(id);
+		return buildResponse(profession, selectedDb);
 	}
 
-	public ProfesionResponse crear(ProfesionRequest request) {
-		try {
-			String selectedDb = setProfessionOutputPortInjection(request.getDatabase());
-			Profession profession = professionInputPort.create(profesionMapperRest.fromAdapterToDomain(request));
-			return buildResponse(profession, selectedDb);
-		} catch (InvalidOptionException e) {
-			log.warn(e.getMessage());
-			return null;
-		} catch (DuplicateException e) {
-			log.warn(e.getMessage());
-			ProfesionResponse response = new ProfesionResponse();
-			response.setIdentification(request.getIdentification());
-			response.setDatabase(request.getDatabase());
-			response.setStatus("DUPLICATED: " + e.getMessage());
-			return response;
-		}
+	public ProfesionResponse crear(ProfesionRequest request)
+			throws InvalidOptionException, DuplicateException {
+		String selectedDb = setProfessionOutputPortInjection(request.getDatabase());
+		Profession profession = professionInputPort.create(profesionMapperRest.fromAdapterToDomain(request));
+		return buildResponse(profession, selectedDb);
 	}
 
-	public ProfesionResponse editar(Integer id, ProfesionRequest request) {
-		try {
-			String selectedDb = setProfessionOutputPortInjection(request.getDatabase());
-			Profession profession = professionInputPort.edit(id, profesionMapperRest.fromAdapterToDomain(request));
-			return buildResponse(profession, selectedDb);
-		} catch (InvalidOptionException | NoExistException e) {
-			log.warn(e.getMessage());
-			return null;
-		}
+	public ProfesionResponse editar(Integer id, ProfesionRequest request)
+			throws InvalidOptionException, NoExistException {
+		String selectedDb = setProfessionOutputPortInjection(request.getDatabase());
+		Profession profession = professionInputPort.edit(id, profesionMapperRest.fromAdapterToDomain(request));
+		return buildResponse(profession, selectedDb);
 	}
 
-	public Boolean eliminar(String database, Integer id) {
-		try {
-			setProfessionOutputPortInjection(database);
-			return professionInputPort.drop(id);
-		} catch (InvalidOptionException | NoExistException e) {
-			log.warn(e.getMessage());
-			return false;
-		}
+	public Boolean eliminar(String database, Integer id)
+			throws InvalidOptionException, NoExistException {
+		setProfessionOutputPortInjection(database);
+		return professionInputPort.drop(id);
 	}
 
-	public Integer contar(String database) {
-		try {
-			setProfessionOutputPortInjection(database);
-			return professionInputPort.count();
-		} catch (InvalidOptionException e) {
-			log.warn(e.getMessage());
-			return 0;
-		}
+	public Integer contar(String database) throws InvalidOptionException {
+		setProfessionOutputPortInjection(database);
+		return professionInputPort.count();
 	}
 }
