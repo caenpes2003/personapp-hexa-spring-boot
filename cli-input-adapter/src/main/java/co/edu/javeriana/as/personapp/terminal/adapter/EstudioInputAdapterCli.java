@@ -2,6 +2,7 @@ package co.edu.javeriana.as.personapp.terminal.adapter;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -73,6 +74,8 @@ public class EstudioInputAdapterCli {
 			System.out.println(estudioMapperCli.fromDomainToAdapterCli(creado));
 		} catch (DuplicateException e) {
 			System.out.println(e.getMessage());
+		} catch (DateTimeParseException e) {
+			System.out.println("Formato de fecha invalido. Use AAAA-MM-DD (por ejemplo 2020-12-15).");
 		}
 	}
 
@@ -84,6 +87,8 @@ public class EstudioInputAdapterCli {
 			System.out.println(estudioMapperCli.fromDomainToAdapterCli(editado));
 		} catch (NoExistException e) {
 			System.out.println(e.getMessage());
+		} catch (DateTimeParseException e) {
+			System.out.println("Formato de fecha invalido. Use AAAA-MM-DD (por ejemplo 2020-12-15).");
 		}
 	}
 
