@@ -16,9 +16,13 @@ public class PersonaMenu {
 
 	private static final int OPCION_REGRESAR_MOTOR_PERSISTENCIA = 0;
 	private static final int OPCION_VER_TODO = 1;
-	// mas opciones
+	private static final int OPCION_BUSCAR = 2;
+	private static final int OPCION_CREAR = 3;
+	private static final int OPCION_EDITAR = 4;
+	private static final int OPCION_ELIMINAR = 5;
+	private static final int OPCION_CONTAR = 6;
 
-	public void iniciarMenu(PersonaInputAdapterCli personaInputAdapterCli, Scanner keyboard) {
+	public void iniciarMenu(PersonaInputAdapterCli adapter, Scanner keyboard) {
 		boolean isValid = false;
 		do {
 			try {
@@ -29,23 +33,23 @@ public class PersonaMenu {
 					isValid = true;
 					break;
 				case PERSISTENCIA_MARIADB:
-					personaInputAdapterCli.setPersonOutputPortInjection("MARIA");
-					menuOpciones(personaInputAdapterCli,keyboard);
+					adapter.setPersonOutputPortInjection("MARIA");
+					menuOpciones(adapter, keyboard);
 					break;
 				case PERSISTENCIA_MONGODB:
-					personaInputAdapterCli.setPersonOutputPortInjection("MONGO");
-					menuOpciones(personaInputAdapterCli,keyboard);
+					adapter.setPersonOutputPortInjection("MONGO");
+					menuOpciones(adapter, keyboard);
 					break;
 				default:
-					log.warn("La opción elegida no es válida.");
+					log.warn("La opcion elegida no es valida.");
 				}
-			}  catch (InvalidOptionException e) {
+			} catch (InvalidOptionException e) {
 				log.warn(e.getMessage());
 			}
 		} while (!isValid);
 	}
 
-	private void menuOpciones(PersonaInputAdapterCli personaInputAdapterCli, Scanner keyboard) {
+	private void menuOpciones(PersonaInputAdapterCli adapter, Scanner keyboard) {
 		boolean isValid = false;
 		do {
 			try {
@@ -56,14 +60,41 @@ public class PersonaMenu {
 					isValid = true;
 					break;
 				case OPCION_VER_TODO:
-					personaInputAdapterCli.historial();					
+					adapter.historial();
 					break;
-				// mas opciones
+				case OPCION_BUSCAR:
+					adapter.buscarUno(leerEntero(keyboard, "Ingrese la cc: "));
+					break;
+				case OPCION_CREAR: {
+					Integer cc = leerEntero(keyboard, "Ingrese la cc: ");
+					String nombre = leerTexto(keyboard, "Ingrese el nombre: ");
+					String apellido = leerTexto(keyboard, "Ingrese el apellido: ");
+					String genero = leerTexto(keyboard, "Ingrese el genero (M/F): ");
+					Integer edad = leerEntero(keyboard, "Ingrese la edad: ");
+					adapter.crear(cc, nombre, apellido, genero, edad);
+					break;
+				}
+				case OPCION_EDITAR: {
+					Integer cc = leerEntero(keyboard, "Ingrese la cc a editar: ");
+					String nombre = leerTexto(keyboard, "Ingrese el nuevo nombre: ");
+					String apellido = leerTexto(keyboard, "Ingrese el nuevo apellido: ");
+					String genero = leerTexto(keyboard, "Ingrese el nuevo genero (M/F): ");
+					Integer edad = leerEntero(keyboard, "Ingrese la nueva edad: ");
+					adapter.editar(cc, nombre, apellido, genero, edad);
+					break;
+				}
+				case OPCION_ELIMINAR:
+					adapter.eliminar(leerEntero(keyboard, "Ingrese la cc a eliminar: "));
+					break;
+				case OPCION_CONTAR:
+					adapter.contar();
+					break;
 				default:
-					log.warn("La opción elegida no es válida.");
+					log.warn("La opcion elegida no es valida.");
 				}
 			} catch (InputMismatchException e) {
-				log.warn("Solo se permiten números.");
+				log.warn("Solo se permiten numeros.");
+				keyboard.next();
 			}
 		} while (!isValid);
 	}
@@ -71,7 +102,11 @@ public class PersonaMenu {
 	private void mostrarMenuOpciones() {
 		System.out.println("----------------------");
 		System.out.println(OPCION_VER_TODO + " para ver todas las personas");
-		// implementar otras opciones
+		System.out.println(OPCION_BUSCAR + " para buscar una persona por cc");
+		System.out.println(OPCION_CREAR + " para crear una persona");
+		System.out.println(OPCION_EDITAR + " para editar una persona");
+		System.out.println(OPCION_ELIMINAR + " para eliminar una persona");
+		System.out.println(OPCION_CONTAR + " para contar las personas");
 		System.out.println(OPCION_REGRESAR_MOTOR_PERSISTENCIA + " para regresar");
 	}
 
@@ -84,12 +119,29 @@ public class PersonaMenu {
 
 	private int leerOpcion(Scanner keyboard) {
 		try {
-			System.out.print("Ingrese una opción: ");
+			System.out.print("Ingrese una opcion: ");
 			return keyboard.nextInt();
 		} catch (InputMismatchException e) {
-			log.warn("Solo se permiten números.");
+			log.warn("Solo se permiten numeros.");
+			keyboard.next();
 			return leerOpcion(keyboard);
 		}
 	}
 
+	private Integer leerEntero(Scanner keyboard, String prompt) {
+		System.out.print(prompt);
+		while (!keyboard.hasNextInt()) {
+			log.warn("Solo se permiten numeros.");
+			keyboard.next();
+			System.out.print(prompt);
+		}
+		int valor = keyboard.nextInt();
+		keyboard.nextLine();
+		return valor;
+	}
+
+	private String leerTexto(Scanner keyboard, String prompt) {
+		System.out.print(prompt);
+		return keyboard.nextLine();
+	}
 }

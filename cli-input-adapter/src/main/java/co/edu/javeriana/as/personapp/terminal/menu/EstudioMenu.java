@@ -16,6 +16,11 @@ public class EstudioMenu {
 
 	private static final int OPCION_REGRESAR_MOTOR_PERSISTENCIA = 0;
 	private static final int OPCION_VER_TODO = 1;
+	private static final int OPCION_BUSCAR = 2;
+	private static final int OPCION_CREAR = 3;
+	private static final int OPCION_EDITAR = 4;
+	private static final int OPCION_ELIMINAR = 5;
+	private static final int OPCION_CONTAR = 6;
 
 	public void iniciarMenu(EstudioInputAdapterCli adapter, Scanner keyboard) {
 		boolean isValid = false;
@@ -57,11 +62,43 @@ public class EstudioMenu {
 				case OPCION_VER_TODO:
 					adapter.historial();
 					break;
+				case OPCION_BUSCAR: {
+					Integer cc = leerEntero(keyboard, "Ingrese la cc de la persona: ");
+					Integer idProf = leerEntero(keyboard, "Ingrese el id de la profesion: ");
+					adapter.buscarUno(cc, idProf);
+					break;
+				}
+				case OPCION_CREAR: {
+					Integer cc = leerEntero(keyboard, "Ingrese la cc de la persona: ");
+					Integer idProf = leerEntero(keyboard, "Ingrese el id de la profesion: ");
+					String fecha = leerTexto(keyboard, "Ingrese la fecha de graduacion (AAAA-MM-DD): ");
+					String univer = leerTexto(keyboard, "Ingrese el nombre de la universidad: ");
+					adapter.crear(cc, idProf, fecha, univer);
+					break;
+				}
+				case OPCION_EDITAR: {
+					Integer cc = leerEntero(keyboard, "Ingrese la cc de la persona: ");
+					Integer idProf = leerEntero(keyboard, "Ingrese el id de la profesion: ");
+					String fecha = leerTexto(keyboard, "Ingrese la nueva fecha (AAAA-MM-DD): ");
+					String univer = leerTexto(keyboard, "Ingrese la nueva universidad: ");
+					adapter.editar(cc, idProf, fecha, univer);
+					break;
+				}
+				case OPCION_ELIMINAR: {
+					Integer cc = leerEntero(keyboard, "Ingrese la cc de la persona: ");
+					Integer idProf = leerEntero(keyboard, "Ingrese el id de la profesion: ");
+					adapter.eliminar(cc, idProf);
+					break;
+				}
+				case OPCION_CONTAR:
+					adapter.contar();
+					break;
 				default:
 					log.warn("La opcion elegida no es valida.");
 				}
 			} catch (InputMismatchException e) {
 				log.warn("Solo se permiten numeros.");
+				keyboard.next();
 			}
 		} while (!isValid);
 	}
@@ -69,6 +106,11 @@ public class EstudioMenu {
 	private void mostrarMenuOpciones() {
 		System.out.println("----------------------");
 		System.out.println(OPCION_VER_TODO + " para ver todos los estudios");
+		System.out.println(OPCION_BUSCAR + " para buscar un estudio por cc e id profesion");
+		System.out.println(OPCION_CREAR + " para crear un estudio");
+		System.out.println(OPCION_EDITAR + " para editar un estudio");
+		System.out.println(OPCION_ELIMINAR + " para eliminar un estudio");
+		System.out.println(OPCION_CONTAR + " para contar los estudios");
 		System.out.println(OPCION_REGRESAR_MOTOR_PERSISTENCIA + " para regresar");
 	}
 
@@ -88,5 +130,22 @@ public class EstudioMenu {
 			keyboard.next();
 			return leerOpcion(keyboard);
 		}
+	}
+
+	private Integer leerEntero(Scanner keyboard, String prompt) {
+		System.out.print(prompt);
+		while (!keyboard.hasNextInt()) {
+			log.warn("Solo se permiten numeros.");
+			keyboard.next();
+			System.out.print(prompt);
+		}
+		int valor = keyboard.nextInt();
+		keyboard.nextLine();
+		return valor;
+	}
+
+	private String leerTexto(Scanner keyboard, String prompt) {
+		System.out.print(prompt);
+		return keyboard.nextLine();
 	}
 }
