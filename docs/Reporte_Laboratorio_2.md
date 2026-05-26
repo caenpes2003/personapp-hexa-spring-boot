@@ -17,7 +17,8 @@
 | **Laboratorio** | 2 — Servicio Web Hexagonal |
 | **Stack solicitado** | JDK 11, Spring Boot, MariaDB, MongoDB, REST, CLI, Swagger 3 |
 | **Repositorio** | https://github.com/caenpes2003/personapp-hexa-spring-boot |
-| **Versión entregada** | v1.0.0 (ver Releases del repositorio) |
+| **URL del Release entregado** | https://github.com/caenpes2003/personapp-hexa-spring-boot/releases/tag/v1.0.0 |
+| **Tag git** | `v1.0.0` |
 | **Fecha** | Mayo de 2026 |
 
 ---
