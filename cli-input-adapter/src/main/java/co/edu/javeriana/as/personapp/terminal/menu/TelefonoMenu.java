@@ -63,9 +63,11 @@ public class TelefonoMenu {
 					adapter.historial();
 					break;
 				case OPCION_BUSCAR:
+					keyboard.nextLine();
 					adapter.buscarUno(leerTexto(keyboard, "Ingrese el numero: "));
 					break;
 				case OPCION_CREAR: {
+					keyboard.nextLine();
 					String numero = leerTexto(keyboard, "Ingrese el numero: ");
 					String operador = leerTexto(keyboard, "Ingrese el operador: ");
 					Integer duenioCc = leerEntero(keyboard, "Ingrese la cc del duenio: ");
@@ -73,6 +75,7 @@ public class TelefonoMenu {
 					break;
 				}
 				case OPCION_EDITAR: {
+					keyboard.nextLine();
 					String numero = leerTexto(keyboard, "Ingrese el numero a editar: ");
 					String operador = leerTexto(keyboard, "Ingrese el nuevo operador: ");
 					Integer duenioCc = leerEntero(keyboard, "Ingrese la cc del nuevo duenio: ");
@@ -80,6 +83,7 @@ public class TelefonoMenu {
 					break;
 				}
 				case OPCION_ELIMINAR:
+					keyboard.nextLine();
 					adapter.eliminar(leerTexto(keyboard, "Ingrese el numero a eliminar: "));
 					break;
 				case OPCION_CONTAR:
