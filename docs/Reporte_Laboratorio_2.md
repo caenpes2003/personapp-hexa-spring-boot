@@ -272,9 +272,9 @@ El CLI parte del esqueleto provisto por el template (`MenuPrincipal`, `PersonaMe
 
 1. Selección de entidad (1 Persona, 2 Profesión, 3 Teléfono, 4 Estudio, 0 Salir).
 2. Selección de motor (1 MariaDB, 2 MongoDB, 0 Regresar).
-3. Operación (1 Listar, 0 Regresar).
+3. Operación: 1 Listar, 2 Buscar uno, 3 Crear, 4 Editar, 5 Eliminar, 6 Contar, 0 Regresar.
 
-En esta entrega el CLI solo expone la operación de listar para las cuatro entidades. La cobertura de crear, editar y eliminar via CLI quedó como pregunta abierta para el profesor, dado que el CRUD completo ya está validado por REST y replicarlo con `Scanner.nextInt()` agregaría volumen de código sin valor funcional nuevo.
+Cada operación de escritura solicita los campos por consola en orden (por ejemplo, crear una persona pide cc, nombre, apellido, género y edad; crear un estudio pide cc del estudiante, id de la profesión, fecha en formato ISO y nombre de la universidad). Las cuatro entidades quedaron con la misma cobertura funcional que la API REST, tras la confirmación del profesor de que el CLI debe ofrecer todas las operaciones tanto en MariaDB como en MongoDB.
 
 > Captura del CLI ejecutándose:
 > ![CLI listando personas en MariaDB](img/cli-personas-maria.png)

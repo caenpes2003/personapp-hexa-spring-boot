@@ -239,7 +239,19 @@ El CLI funciona como menú interactivo. La navegación tiene tres niveles:
 
 1. **Menú principal:** seleccionar entidad (1 Persona, 2 Profesión, 3 Teléfono, 4 Estudio, 0 Salir).
 2. **Selector de motor de persistencia:** 1 para MariaDB, 2 para MongoDB, 0 para regresar.
-3. **Operaciones disponibles:** 1 para listar todos los registros, 0 para regresar.
+3. **Operaciones disponibles** para la entidad seleccionada:
+
+   | Opción | Operación |
+   |---|---|
+   | 1 | Listar todos los registros |
+   | 2 | Buscar uno por id (o por clave compuesta en el caso de Estudio) |
+   | 3 | Crear |
+   | 4 | Editar |
+   | 5 | Eliminar |
+   | 6 | Contar |
+   | 0 | Regresar |
+
+Cuando se elige crear, editar o eliminar, el menú solicita los datos por consola uno a uno (por ejemplo, en Persona pide cc, nombre, apellido, género y edad). Las fechas de Estudio se ingresan en formato ISO `AAAA-MM-DD`.
 
 Ejemplo de sesión que lista las personas almacenadas en MariaDB:
 
@@ -257,6 +269,11 @@ Ingrese una opcion: 1
 Ingrese una opcion: 1
 ----------------------
 1 para ver todas las personas
+2 para buscar una persona por cc
+3 para crear una persona
+4 para editar una persona
+5 para eliminar una persona
+6 para contar las personas
 0 para regresar
 Ingrese una opcion: 1
 PersonaModelCli(cc=123456789, nombre=Pepe, apellido=Perez, genero=MALE, edad=30)
