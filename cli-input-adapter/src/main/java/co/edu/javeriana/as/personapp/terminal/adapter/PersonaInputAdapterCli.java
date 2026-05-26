@@ -7,6 +7,7 @@ import co.edu.javeriana.as.personapp.application.port.in.PersonInputPort;
 import co.edu.javeriana.as.personapp.application.port.out.PersonOutputPort;
 import co.edu.javeriana.as.personapp.application.usecase.PersonUseCase;
 import co.edu.javeriana.as.personapp.common.annotations.Adapter;
+import co.edu.javeriana.as.personapp.common.exceptions.DuplicateException;
 import co.edu.javeriana.as.personapp.common.exceptions.InvalidOptionException;
 import co.edu.javeriana.as.personapp.common.exceptions.NoExistException;
 import co.edu.javeriana.as.personapp.common.setup.DatabaseOption;
@@ -59,15 +60,19 @@ public class PersonaInputAdapterCli {
 	}
 
 	public void crear(Integer cc, String nombre, String apellido, String generoStr, Integer edad) {
-		Person p = new Person();
-		p.setIdentification(cc);
-		p.setFirstName(nombre);
-		p.setLastName(apellido);
-		p.setGender(parseGender(generoStr));
-		p.setAge(edad);
-		Person creada = personInputPort.create(p);
-		System.out.println("Persona creada:");
-		System.out.println(personaMapperCli.fromDomainToAdapterCli(creada));
+		try {
+			Person p = new Person();
+			p.setIdentification(cc);
+			p.setFirstName(nombre);
+			p.setLastName(apellido);
+			p.setGender(parseGender(generoStr));
+			p.setAge(edad);
+			Person creada = personInputPort.create(p);
+			System.out.println("Persona creada:");
+			System.out.println(personaMapperCli.fromDomainToAdapterCli(creada));
+		} catch (DuplicateException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 	public void editar(Integer cc, String nombre, String apellido, String generoStr, Integer edad) {

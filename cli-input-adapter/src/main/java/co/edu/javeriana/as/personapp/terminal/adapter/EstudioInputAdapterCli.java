@@ -10,6 +10,7 @@ import co.edu.javeriana.as.personapp.application.port.in.StudyInputPort;
 import co.edu.javeriana.as.personapp.application.port.out.StudyOutputPort;
 import co.edu.javeriana.as.personapp.application.usecase.StudyUseCase;
 import co.edu.javeriana.as.personapp.common.annotations.Adapter;
+import co.edu.javeriana.as.personapp.common.exceptions.DuplicateException;
 import co.edu.javeriana.as.personapp.common.exceptions.InvalidOptionException;
 import co.edu.javeriana.as.personapp.common.exceptions.NoExistException;
 import co.edu.javeriana.as.personapp.common.setup.DatabaseOption;
@@ -65,10 +66,14 @@ public class EstudioInputAdapterCli {
 	}
 
 	public void crear(Integer personCc, Integer professionId, String fechaIso, String universidad) {
-		Study s = buildStudy(personCc, professionId, fechaIso, universidad);
-		Study creado = studyInputPort.create(s);
-		System.out.println("Estudio creado:");
-		System.out.println(estudioMapperCli.fromDomainToAdapterCli(creado));
+		try {
+			Study s = buildStudy(personCc, professionId, fechaIso, universidad);
+			Study creado = studyInputPort.create(s);
+			System.out.println("Estudio creado:");
+			System.out.println(estudioMapperCli.fromDomainToAdapterCli(creado));
+		} catch (DuplicateException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 	public void editar(Integer personCc, Integer professionId, String fechaIso, String universidad) {

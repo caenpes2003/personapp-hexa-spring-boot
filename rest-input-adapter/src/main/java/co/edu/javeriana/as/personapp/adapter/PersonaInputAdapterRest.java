@@ -11,6 +11,7 @@ import co.edu.javeriana.as.personapp.application.port.in.PersonInputPort;
 import co.edu.javeriana.as.personapp.application.port.out.PersonOutputPort;
 import co.edu.javeriana.as.personapp.application.usecase.PersonUseCase;
 import co.edu.javeriana.as.personapp.common.annotations.Adapter;
+import co.edu.javeriana.as.personapp.common.exceptions.DuplicateException;
 import co.edu.javeriana.as.personapp.common.exceptions.InvalidOptionException;
 import co.edu.javeriana.as.personapp.common.setup.DatabaseOption;
 import co.edu.javeriana.as.personapp.domain.Gender;
@@ -80,6 +81,13 @@ public class PersonaInputAdapterRest {
 			return buildResponse(person, selectedDb);
 		} catch (InvalidOptionException e) {
 			log.warn(e.getMessage());
+		} catch (DuplicateException e) {
+			log.warn(e.getMessage());
+			PersonaResponse response = new PersonaResponse();
+			response.setDni(request.getDni());
+			response.setDatabase(request.getDatabase());
+			response.setStatus("DUPLICATED: " + e.getMessage());
+			return response;
 		}
 		return null;
 	}

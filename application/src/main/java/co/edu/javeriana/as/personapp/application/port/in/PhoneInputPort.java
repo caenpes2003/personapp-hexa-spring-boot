@@ -4,6 +4,7 @@ import java.util.List;
 
 import co.edu.javeriana.as.personapp.application.port.out.PhoneOutputPort;
 import co.edu.javeriana.as.personapp.common.annotations.Port;
+import co.edu.javeriana.as.personapp.common.exceptions.DuplicateException;
 import co.edu.javeriana.as.personapp.common.exceptions.NoExistException;
 import co.edu.javeriana.as.personapp.domain.Phone;
 
@@ -12,7 +13,7 @@ public interface PhoneInputPort {
 
 	public void setPersintence(PhoneOutputPort phonePersintence);
 
-	public Phone create(Phone phone);
+	public Phone create(Phone phone) throws DuplicateException;
 
 	public Phone edit(String number, Phone phone) throws NoExistException;
 

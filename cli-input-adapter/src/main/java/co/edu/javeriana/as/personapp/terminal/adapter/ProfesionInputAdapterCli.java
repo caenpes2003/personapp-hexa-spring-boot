@@ -7,6 +7,7 @@ import co.edu.javeriana.as.personapp.application.port.in.ProfessionInputPort;
 import co.edu.javeriana.as.personapp.application.port.out.ProfessionOutputPort;
 import co.edu.javeriana.as.personapp.application.usecase.ProfessionUseCase;
 import co.edu.javeriana.as.personapp.common.annotations.Adapter;
+import co.edu.javeriana.as.personapp.common.exceptions.DuplicateException;
 import co.edu.javeriana.as.personapp.common.exceptions.InvalidOptionException;
 import co.edu.javeriana.as.personapp.common.exceptions.NoExistException;
 import co.edu.javeriana.as.personapp.common.setup.DatabaseOption;
@@ -58,13 +59,17 @@ public class ProfesionInputAdapterCli {
 	}
 
 	public void crear(Integer id, String nombre, String descripcion) {
-		Profession p = new Profession();
-		p.setIdentification(id);
-		p.setName(nombre);
-		p.setDescription(descripcion);
-		Profession creada = professionInputPort.create(p);
-		System.out.println("Profesion creada:");
-		System.out.println(profesionMapperCli.fromDomainToAdapterCli(creada));
+		try {
+			Profession p = new Profession();
+			p.setIdentification(id);
+			p.setName(nombre);
+			p.setDescription(descripcion);
+			Profession creada = professionInputPort.create(p);
+			System.out.println("Profesion creada:");
+			System.out.println(profesionMapperCli.fromDomainToAdapterCli(creada));
+		} catch (DuplicateException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 	public void editar(Integer id, String nombre, String descripcion) {

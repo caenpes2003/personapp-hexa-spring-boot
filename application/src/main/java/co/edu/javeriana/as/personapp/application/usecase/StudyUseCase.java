@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import co.edu.javeriana.as.personapp.application.port.in.StudyInputPort;
 import co.edu.javeriana.as.personapp.application.port.out.StudyOutputPort;
 import co.edu.javeriana.as.personapp.common.annotations.UseCase;
+import co.edu.javeriana.as.personapp.common.exceptions.DuplicateException;
 import co.edu.javeriana.as.personapp.common.exceptions.NoExistException;
 import co.edu.javeriana.as.personapp.domain.Person;
 import co.edu.javeriana.as.personapp.domain.Profession;
@@ -29,8 +30,14 @@ public class StudyUseCase implements StudyInputPort {
 	}
 
 	@Override
-	public Study create(Study study) {
+	public Study create(Study study) throws DuplicateException {
 		log.debug("Into create on Application Domain");
+		Integer personCc = study.getPerson().getIdentification();
+		Integer professionId = study.getProfession().getIdentification();
+		if (studyPersintence.findById(personCc, professionId) != null) {
+			throw new DuplicateException("The study with person " + personCc + " and profession "
+					+ professionId + " already exists in db");
+		}
 		return studyPersintence.save(study);
 	}
 

@@ -11,6 +11,7 @@ import co.edu.javeriana.as.personapp.application.port.in.PhoneInputPort;
 import co.edu.javeriana.as.personapp.application.port.out.PhoneOutputPort;
 import co.edu.javeriana.as.personapp.application.usecase.PhoneUseCase;
 import co.edu.javeriana.as.personapp.common.annotations.Adapter;
+import co.edu.javeriana.as.personapp.common.exceptions.DuplicateException;
 import co.edu.javeriana.as.personapp.common.exceptions.InvalidOptionException;
 import co.edu.javeriana.as.personapp.common.exceptions.NoExistException;
 import co.edu.javeriana.as.personapp.common.setup.DatabaseOption;
@@ -86,6 +87,13 @@ public class TelefonoInputAdapterRest {
 		} catch (InvalidOptionException e) {
 			log.warn(e.getMessage());
 			return null;
+		} catch (DuplicateException e) {
+			log.warn(e.getMessage());
+			TelefonoResponse response = new TelefonoResponse();
+			response.setNumber(request.getNumber());
+			response.setDatabase(request.getDatabase());
+			response.setStatus("DUPLICATED: " + e.getMessage());
+			return response;
 		}
 	}
 

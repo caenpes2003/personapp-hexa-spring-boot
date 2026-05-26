@@ -7,6 +7,7 @@ import co.edu.javeriana.as.personapp.application.port.in.PhoneInputPort;
 import co.edu.javeriana.as.personapp.application.port.out.PhoneOutputPort;
 import co.edu.javeriana.as.personapp.application.usecase.PhoneUseCase;
 import co.edu.javeriana.as.personapp.common.annotations.Adapter;
+import co.edu.javeriana.as.personapp.common.exceptions.DuplicateException;
 import co.edu.javeriana.as.personapp.common.exceptions.InvalidOptionException;
 import co.edu.javeriana.as.personapp.common.exceptions.NoExistException;
 import co.edu.javeriana.as.personapp.common.setup.DatabaseOption;
@@ -59,15 +60,19 @@ public class TelefonoInputAdapterCli {
 	}
 
 	public void crear(String numero, String operador, Integer duenioCc) {
-		Phone p = new Phone();
-		p.setNumber(numero);
-		p.setCompany(operador);
-		Person owner = new Person();
-		owner.setIdentification(duenioCc);
-		p.setOwner(owner);
-		Phone creado = phoneInputPort.create(p);
-		System.out.println("Telefono creado:");
-		System.out.println(telefonoMapperCli.fromDomainToAdapterCli(creado));
+		try {
+			Phone p = new Phone();
+			p.setNumber(numero);
+			p.setCompany(operador);
+			Person owner = new Person();
+			owner.setIdentification(duenioCc);
+			p.setOwner(owner);
+			Phone creado = phoneInputPort.create(p);
+			System.out.println("Telefono creado:");
+			System.out.println(telefonoMapperCli.fromDomainToAdapterCli(creado));
+		} catch (DuplicateException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 	public void editar(String numero, String operador, Integer duenioCc) {

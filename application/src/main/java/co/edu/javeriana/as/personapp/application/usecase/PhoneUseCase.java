@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import co.edu.javeriana.as.personapp.application.port.in.PhoneInputPort;
 import co.edu.javeriana.as.personapp.application.port.out.PhoneOutputPort;
 import co.edu.javeriana.as.personapp.common.annotations.UseCase;
+import co.edu.javeriana.as.personapp.common.exceptions.DuplicateException;
 import co.edu.javeriana.as.personapp.common.exceptions.NoExistException;
 import co.edu.javeriana.as.personapp.domain.Phone;
 import lombok.extern.slf4j.Slf4j;
@@ -27,8 +28,12 @@ public class PhoneUseCase implements PhoneInputPort {
 	}
 
 	@Override
-	public Phone create(Phone phone) {
+	public Phone create(Phone phone) throws DuplicateException {
 		log.debug("Into create on Application Domain");
+		if (phonePersintence.findById(phone.getNumber()) != null) {
+			throw new DuplicateException(
+					"The phone with number " + phone.getNumber() + " already exists in db");
+		}
 		return phonePersintence.save(phone);
 	}
 

@@ -11,6 +11,7 @@ import co.edu.javeriana.as.personapp.application.port.in.ProfessionInputPort;
 import co.edu.javeriana.as.personapp.application.port.out.ProfessionOutputPort;
 import co.edu.javeriana.as.personapp.application.usecase.ProfessionUseCase;
 import co.edu.javeriana.as.personapp.common.annotations.Adapter;
+import co.edu.javeriana.as.personapp.common.exceptions.DuplicateException;
 import co.edu.javeriana.as.personapp.common.exceptions.InvalidOptionException;
 import co.edu.javeriana.as.personapp.common.exceptions.NoExistException;
 import co.edu.javeriana.as.personapp.common.setup.DatabaseOption;
@@ -87,6 +88,13 @@ public class ProfesionInputAdapterRest {
 		} catch (InvalidOptionException e) {
 			log.warn(e.getMessage());
 			return null;
+		} catch (DuplicateException e) {
+			log.warn(e.getMessage());
+			ProfesionResponse response = new ProfesionResponse();
+			response.setIdentification(request.getIdentification());
+			response.setDatabase(request.getDatabase());
+			response.setStatus("DUPLICATED: " + e.getMessage());
+			return response;
 		}
 	}
 

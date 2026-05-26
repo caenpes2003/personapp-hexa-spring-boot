@@ -11,6 +11,7 @@ import co.edu.javeriana.as.personapp.application.port.in.StudyInputPort;
 import co.edu.javeriana.as.personapp.application.port.out.StudyOutputPort;
 import co.edu.javeriana.as.personapp.application.usecase.StudyUseCase;
 import co.edu.javeriana.as.personapp.common.annotations.Adapter;
+import co.edu.javeriana.as.personapp.common.exceptions.DuplicateException;
 import co.edu.javeriana.as.personapp.common.exceptions.InvalidOptionException;
 import co.edu.javeriana.as.personapp.common.exceptions.NoExistException;
 import co.edu.javeriana.as.personapp.common.setup.DatabaseOption;
@@ -86,6 +87,14 @@ public class EstudioInputAdapterRest {
 		} catch (InvalidOptionException e) {
 			log.warn(e.getMessage());
 			return null;
+		} catch (DuplicateException e) {
+			log.warn(e.getMessage());
+			EstudioResponse response = new EstudioResponse();
+			response.setPersonCc(request.getPersonCc());
+			response.setProfessionId(request.getProfessionId());
+			response.setDatabase(request.getDatabase());
+			response.setStatus("DUPLICATED: " + e.getMessage());
+			return response;
 		}
 	}
 

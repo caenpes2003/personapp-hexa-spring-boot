@@ -4,6 +4,7 @@ import java.util.List;
 
 import co.edu.javeriana.as.personapp.application.port.out.StudyOutputPort;
 import co.edu.javeriana.as.personapp.common.annotations.Port;
+import co.edu.javeriana.as.personapp.common.exceptions.DuplicateException;
 import co.edu.javeriana.as.personapp.common.exceptions.NoExistException;
 import co.edu.javeriana.as.personapp.domain.Study;
 
@@ -12,7 +13,7 @@ public interface StudyInputPort {
 
 	public void setPersintence(StudyOutputPort studyPersintence);
 
-	public Study create(Study study);
+	public Study create(Study study) throws DuplicateException;
 
 	public Study edit(Integer personCc, Integer professionId, Study study) throws NoExistException;
 
