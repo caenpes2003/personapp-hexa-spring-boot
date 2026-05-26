@@ -287,6 +287,8 @@ PersonaModelCli(cc=147258369, nombre=Pepita, apellido=Juarez, genero=FEMALE, eda
 
 Todos los comandos asumen que la API REST está corriendo en `http://localhost:3000`.
 
+> **Nota sobre duplicados:** los endpoints `POST` (crear) validan que el identificador no exista previamente. Si se intenta crear un registro con un id que ya está en la base, la respuesta llega con `status: "DUPLICATED: ..."` y el registro original queda intacto en lugar de sobrescribirse.
+
 ### Persona
 
 ```bash
