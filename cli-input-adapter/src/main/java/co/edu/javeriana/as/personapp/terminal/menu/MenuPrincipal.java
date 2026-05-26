@@ -88,10 +88,11 @@ public class MenuPrincipal {
 
 	private int leerOpcion() {
 		try {
-			System.out.print("Ingrese una opción: ");
+			System.out.print("Ingrese una opcion: ");
 			return keyboard.nextInt();
 		} catch (InputMismatchException e) {
-			log.warn("Solo se permiten números.");
+			log.warn("Solo se permiten numeros.");
+			keyboard.next();
 			return leerOpcion();
 		}
 	}
